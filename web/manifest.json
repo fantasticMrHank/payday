@@ -1,6 +1,6 @@
 {
-    "name": "build_test2",
-    "short_name": "build_test2",
+    "name": "payday",
+    "short_name": "payday",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
