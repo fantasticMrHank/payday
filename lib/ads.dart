@@ -5,6 +5,7 @@ import 'package:payday/shared/pay_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:wakelock/wakelock.dart';
 
 class AdsScreen extends StatefulWidget {
   static String id = 'Ads_Screen';
@@ -19,6 +20,9 @@ class _AdsScreenState extends State<AdsScreen> {
 
   void initState() {
     super.initState();
+    // this keeps the device awake
+    Wakelock.enable();
+
     User? currentUser = _auth.currentUser;
     userID = currentUser!.uid;
   }
