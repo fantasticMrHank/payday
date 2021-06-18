@@ -22,6 +22,19 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   final _auth = FirebaseAuth.instance;
   String verificationID = "";
 
+  String formatPhoneNumber(origNum) {
+    origNum = origNum.replaceAll(" ", "");
+    origNum = origNum.replaceAll("-", "");
+    origNum = origNum.replaceAll("(", "");
+    origNum = origNum.replaceAll(")", "");
+    origNum = origNum.replaceAll(".", "");
+
+    if (!origNum.contains("+1")) {
+      origNum = "+1" + origNum;
+    }
+    return origNum;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,6 +60,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
             child: MaterialButton(
               onPressed: () async {
                 widget.passIsLoading(true);
+
+                phoneNumber = formatPhoneNumber(phoneNumber);
+
                 _auth.verifyPhoneNumber(
                   phoneNumber: phoneNumber,
                   verificationCompleted: (cred) async {},

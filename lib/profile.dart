@@ -6,6 +6,7 @@ import 'package:payday/shared/const.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String id = 'Profile_Screen';
@@ -19,6 +20,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userEmail = '';
   String userID = '';
   double initialBalance = 0;
+  bool awake = false;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         userName = documentSnapshot.data()!['name'];
         userEmail = documentSnapshot.data()!['email'];
+        awake = documentSnapshot.data()!['awake'];
       });
     });
   }
@@ -52,7 +56,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       collectionRef.doc(user.uid).set({
         'email': userEmail,
         'name': userName,
-        'balance': initialBalance
+        'balance': initialBalance,
+        'awake': awake
       }).then((value) {
         setUserInfo(user.uid);
       });
@@ -157,7 +162,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         inputStyle.copyWith(hintText: 'Enter Paypal account'),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 25,
+                  ),
+                  FlutterSwitch(
+                    width: 100.0,
+                    height: 45.0,
+                    valueFontSize: 20.0,
+                    toggleSize: 40.0,
+                    value: awake,
+                    borderRadius: 30.0,
+                    activeColor: Colors.amber,
+                    padding: 4,
+                    showOnOff: true,
+                    onToggle: (val) {
+                      setState(() {
+                        awake = val;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    ' Prevent your device screen from going to sleep while viewing ads? (Turn it on to maximize earnings.',
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 25,
                   ),
                   Material(
                     color: Colors.amber,
@@ -170,6 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         collectionRef.doc(userID).update({
                           'name': userName,
                           'email': userEmail,
+                          'awake': awake,
                         }).then((value) {
                           Navigator.popAndPushNamed(context, AdsScreen.id);
                         });
