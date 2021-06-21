@@ -29,6 +29,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     origNum = origNum.replaceAll(")", "");
     origNum = origNum.replaceAll(".", "");
 
+    if (origNum.startsWith("1")) {
+      origNum = "+" + origNum;
+    }
     if (!origNum.contains("+1")) {
       origNum = "+1" + origNum;
     }
